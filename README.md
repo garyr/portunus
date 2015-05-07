@@ -33,7 +33,7 @@ filename can be customized using composer "extra" values.
 
 #### Creating a Safe
 ```
-./vendor/bin/portunus safe:create dev
+$ ./vendor/bin/portunus safe:create dev
 
 Creating safe 'dev'... DONE
 
@@ -60,7 +60,7 @@ decrypting of all secrets. Portunus does not provide a mechanism for storing or 
 
 #### List Safes
 ```
-./vendor/bin/portunus safe:list
+$ ./vendor/bin/portunus safe:list
 
 +-----------+----------------------+-----------+---------------------+---------------------+
 | Safe Name | Signature            | # Secrets | Created             | Updated             |
@@ -75,7 +75,7 @@ decrypting of all secrets. Portunus does not provide a mechanism for storing or 
 
 #### Store a secret Key:Value pair
 ```
-./vendor/bin/portunus secret:store dev foo bar
+$ ./vendor/bin/portunus secret:store dev foo bar
 
 Using safe 'dev'...
 
@@ -86,7 +86,7 @@ This command will encrypt the string 'bar' under the reference of 'foo' in the s
 
 #### List stored secrets
 ```
-./bin/portunus secret:list dev
+$ ./bin/portunus secret:list dev
 
 +-----------+-------------------------+--------+---------------------+---------------------+
 | Key Name  | Signature               | Length | Created             | Updated             |
@@ -120,11 +120,7 @@ $value = $Agent->getKey('foo');
 
 Basic PHPUnit Test Coverage
 ```
- ./vendor/bin/phpunit
-
-.......
-
-Time: 660 ms, Memory: 14.75Mb
-
-OK (7 tests, 17 assertions)
+$ cd path/to/Portunus/
+$ composer install
+$ phpunit
 ```
