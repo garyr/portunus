@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../autoload.php';
+
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new Portunus\Console\Command\DbCreateCommand());
+$application->add(new Portunus\Console\Command\Safe\CreateCommand());
+$application->add(new Portunus\Console\Command\Safe\RemoveCommand());
+$application->add(new Portunus\Console\Command\Safe\ListCommand());
+$application->add(new Portunus\Console\Command\Secret\DecryptCommand());
+$application->add(new Portunus\Console\Command\Secret\StoreCommand());
+$application->add(new Portunus\Console\Command\Secret\RemoveCommand());
+$application->add(new Portunus\Console\Command\Secret\ListCommand());
+$application->run();

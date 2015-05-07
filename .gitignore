@@ -1,0 +1,5 @@
+composer.lock
+cache/*
+config/config.xml
+data/
+vendor/

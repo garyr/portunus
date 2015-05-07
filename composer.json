@@ -1,0 +1,56 @@
+{
+    "name": "garyr/portunus",
+    "type": "library",
+    "description": "A library for storing encrypted secrets",
+    "keywords": [
+        "encryption",
+        "crypt",
+        "secrets",
+        "storage",
+        "ssl",
+        "key",
+        "value"
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~4.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gary Rogers",
+            "email": "gmrwebde@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Portunus\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Portunus\\Test\\": "test/"
+        }
+    },
+    "require": {
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "doctrine/orm": "2.4.*",
+        "phpseclib/phpseclib": "~0.3",
+        "symfony/config": "~2.6",
+        "symfony/console": "~2.6",
+        "symfony/dependency-injection": "~2.6",
+        "symfony/expression-language": "~2.6"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "Portunus\\Console\\Composer::postUpdate"
+        ],
+        "post-install-cmd": [
+            "Portunus\\Console\\Composer::postInstall"
+        ]
+    },
+    "extra": {
+        "portunus-data-dir": "data",
+        "portunus-db-name": "portunus.sqlite"
+    }
+}
