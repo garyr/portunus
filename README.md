@@ -87,7 +87,7 @@ This command will encrypt the string 'bar' under the reference of 'foo' in the s
 ./bin/portunus secret:list dev
 
 +-----------+-------------------------+--------+---------------------+---------------------+
-| Key Nam e | Signature               | Length | Created             | Updated             |
+| Key Name  | Signature               | Length | Created             | Updated             |
 +-----------+-------------------------+--------+---------------------+---------------------+
 | foo       | fe1cbb60a0249ecbd3f2... | 128    | 2015-05-07 16:32:03 | 2015-05-07 16:32:03 |
 | foo.foo   | 847b80314a68c84ab0c9... | 128    | 2015-05-07 16:33:21 | 2015-05-07 16:33:21 |
