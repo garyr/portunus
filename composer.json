@@ -11,6 +11,9 @@
         "key",
         "value"
     ],
+    "bin": [
+      "bin/portunus"
+    ],
     "require-dev": {
         "phpunit/phpunit": "~4.6"
     },
