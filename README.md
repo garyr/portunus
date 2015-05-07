@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/garyr/portunus.png)](http://travis-ci.org/garyr/portunus)
+
 Portunus - The God of Keys
 =========
 
