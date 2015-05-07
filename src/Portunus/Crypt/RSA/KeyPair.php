@@ -23,11 +23,12 @@ class KeyPair
     public function generate($keySize = null)
     {
         $this->setKeySize($keySize);
-
-        $rsa = new \Crypt_RSA();
-        $key = $rsa->createKey($this->keySize);
-        $this->setPrivateKey(new PrivateKey($key['privatekey']));
-        $this->setPublicKey(new PublicKey($key['publickey']));
+        $resource = openssl_pkey_new(array('private_key_bits' => $this->keySize));
+        $pubKey = openssl_pkey_get_details($resource);
+        $private = '';
+        openssl_pkey_export($resource, $private);
+        $this->setPrivateKey(new PrivateKey($private));
+        $this->setPublicKey(new PublicKey($pubKey['key']));
     }
 
     public function getKeySize()
