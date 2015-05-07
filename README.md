@@ -11,6 +11,14 @@ A library for storing encrypted secrets
 {
     "require": {
         "garyr/portunus": "1.0.*"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "Portunus\\Console\\Composer::postUpdate"
+        ],
+        "post-install-cmd": [
+            "Portunus\\Console\\Composer::postInstall"
+        ]
     }
 }
 ```
