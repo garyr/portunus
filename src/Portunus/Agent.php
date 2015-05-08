@@ -67,7 +67,13 @@ class Agent
         $PrivateKey = new PrivateKey();
         $PrivateKey->setKey($privateKeyString);
 
-        return $secret->getValue($PrivateKey);
+        try {
+            $result = $secret->getValue($PrivateKey);
+        } catch(\Exception $e) {
+            $result = false;
+        }
+
+        return $result;
     }
 
     /**
