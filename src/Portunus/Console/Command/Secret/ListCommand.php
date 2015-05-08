@@ -8,6 +8,7 @@ use Portunus\Controller\SecretController;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -24,6 +25,12 @@ class ListCommand extends Command
                 'safe',
                 InputArgument::OPTIONAL,
                 'Safe name'
+            )
+            ->addOption(
+                'signature',
+                's',
+                InputOption::VALUE_NONE,
+                'If set, the secret signature will be displayed'
             )
         ;
     }
@@ -64,17 +71,31 @@ class ListCommand extends Command
 
         $rows = array();
         foreach ($secrets as $key => $secret) {
-            $rows[] = array(
-                $secret->getKey(),
-                hash('sha256', $secret->getValue()),
-                strlen($secret->getValue()),
-                $secret->getCreated()->format('Y-m-d H:i:s'),
-                $secret->getUpdated()->format('Y-m-d H:i:s'),
-            );
+            if ($input->getOption('signature')) {
+                $rows[] = array(
+                    $secret->getKey(),
+                    hash('sha256', $secret->getValue()),
+                    strlen($secret->getValue()),
+                    $secret->getCreated()->format('Y-m-d H:i:s'),
+                    $secret->getUpdated()->format('Y-m-d H:i:s'),
+                );
+            } else {
+                $rows[] = array(
+                    $secret->getKey(),
+                    strlen($secret->getValue()),
+                    $secret->getCreated()->format('Y-m-d H:i:s'),
+                    $secret->getUpdated()->format('Y-m-d H:i:s'),
+                );
+            }
         }
 
         $table = $this->getHelper('table');
-        $table->setHeaders(array('Key Name', 'Signature', 'Length', 'Created', 'Updated'))->setRows($rows);
+
+        if ($input->getOption('signature')) {
+            $table->setHeaders(array('Key Name', 'Signature', 'Length', 'Created', 'Updated'))->setRows($rows);
+        } else {
+            $table->setHeaders(array('Key Name', 'Length', 'Created', 'Updated'))->setRows($rows);
+        }
 
         $table->render($output);
         $output->writeln('');
