@@ -66,7 +66,7 @@ class DecryptCommand extends Command
 
         $keyName = $input->getArgument('key');
         if (empty($keyName)) {
-            $keyNames = $SecretController->listSecrets($safe);
+            $keyNames = $SecretController->getKeys($safe);
             $helper = $this->getHelper('question');
             $question = new ChoiceQuestion(
                 '<question>Please select the key to decrypt:</question> ',
