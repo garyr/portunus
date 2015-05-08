@@ -33,7 +33,7 @@ class SqliteConnectionFactory
     public function getConnection()
     {
         if (!preg_match('/^\//', $this->dataDir)) {
-            $this->dataDir = realpath(__DIR__.'/../'.$this->packageDir . $this->dataDir);
+            $this->dataDir = realpath(__DIR__.'/../../../'.$this->packageDir . $this->dataDir);
         }
 
         return [

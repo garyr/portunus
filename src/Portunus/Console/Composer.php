@@ -67,7 +67,7 @@ EOF;
 
         // write config xml
         $xml = str_replace('%%CREATED%%', time(), $xml);
-        $xml = str_replace('%%PORTUNUS_VENDORDIR%%', self::relativePath($vendorDir, realpath(__DIR__ . '/../../..')), $xml);
+        $xml = str_replace('%%PORTUNUS_VENDORDIR%%', self::relativePath(realpath(__DIR__ . '/../../..'), $vendorDir), $xml);
         $xml = str_replace('%%PORTUNUS_FILENAME%%', $portunusDbName, $xml);
         $xml = str_replace('%%PORTUNUS_DATADIR%%', $portunusDataDir, $xml);
         file_put_contents(__DIR__.'/../../../config/config.xml', $xml);
