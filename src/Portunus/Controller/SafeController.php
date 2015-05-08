@@ -89,7 +89,7 @@ class SafeController
     {
         $safeCollection = $this->listSafes();
 
-        $safeNames = [];
+        $safeNames = array();
         foreach ($safeCollection as $key => $safe) {
             $safeNames[] = $safe->getName();
         }

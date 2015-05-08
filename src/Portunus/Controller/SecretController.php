@@ -83,7 +83,7 @@ class SecretController
     {
         $secretKeyCollection = $this->listSecrets($safe);
 
-        $keyNames = [];
+        $keyNames = array();
         foreach ($secretKeyCollection as $key => $secret) {
             $keyNames[] = $secret->getKey();
         }

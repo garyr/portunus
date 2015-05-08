@@ -62,15 +62,15 @@ class ListCommand extends Command
             return;
         }
 
-        $rows = [];
+        $rows = array();
         foreach ($secrets as $key => $secret) {
-            $rows[] = [
+            $rows[] = array(
                 $secret->getKey(),
                 hash('sha256', $secret->getValue()),
                 strlen($secret->getValue()),
                 $secret->getCreated()->format('Y-m-d H:i:s'),
                 $secret->getUpdated()->format('Y-m-d H:i:s'),
-            ];
+            );
         }
 
         $table = $this->getHelper('table');

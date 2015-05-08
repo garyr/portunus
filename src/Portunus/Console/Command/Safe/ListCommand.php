@@ -38,15 +38,15 @@ class ListCommand extends Command
 
         $SecretController = new SecretController();
 
-        $rows = [];
+        $rows = array();
         foreach ($safes as $key => $safe) {
-            $rows[] = [
+            $rows[] = array(
                 $safe->getName(),
                 $safe->getPublicKey()->getKeySignature(),
                 count($SecretController->listSecrets($safe)),
                 $safe->getCreated()->format('Y-m-d H:i:s'),
                 $safe->getUpdated()->format('Y-m-d H:i:s'),
-            ];
+            );
         }
 
         $table = $this->getHelper('table');
