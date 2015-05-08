@@ -36,9 +36,9 @@ class SqliteConnectionFactory
             $this->dataDir = realpath(__DIR__.'/../../../'.$this->packageDir . $this->dataDir);
         }
 
-        return [
+        return array(
             'driver' => 'pdo_sqlite',
             'path' => sprintf('%s/%s', $this->dataDir, $this->filename),
-        ];
+        );
     }
 }
