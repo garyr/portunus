@@ -11,16 +11,6 @@ class Composer
     const DEFAULT_DB_NAME = 'portunus.sqlite';
 
     /**
-     * @param Event $event
-     */
-    protected static function initialize(Event $event)
-    {
-        if (!defined('PORTUNUS_COMPOSER_VENDOR_DIR')) {
-            define('PORTUNUS_COMPOSER_VENDOR_DIR', $event->getComposer()->getConfig()->get('vendor-dir'));
-        }
-    }
-
-    /**
      * Post update event handler
      *
      * @param Event $event
@@ -28,7 +18,6 @@ class Composer
      */
     public static function postUpdate(Event $event)
     {
-        self::initialize($event);
         self::writeConfigXml($event);
         Application::createDb();
     }
@@ -41,7 +30,6 @@ class Composer
      */
     public static function postInstall(Event $event)
     {
-        self::initialize($event);
         self::writeConfigXml($event);
         Application::createDb();
     }
@@ -53,6 +41,7 @@ class Composer
      */
     protected static function writeConfigXml(Event $event)
     {
+        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         $portunusDataDir = self::DEFAULT_DATA_DIR;
         $portunusDbName = self::DEFAULT_DB_NAME;
         extract(self::getConfigParams($event));
@@ -68,8 +57,8 @@ Created: %%CREATED%%
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="portunus.composer_vendor_dir" type="constant">PORTUNUS_COMPOSER_VENDOR_DIR</parameter>
         <parameter key="portunus.dev">false</parameter>
+        <parameter key="portunus.composer_vendor_dir">%%PORTUNUS_VENDORDIR%%</parameter>
         <parameter key="doctrine.db.filename">%%PORTUNUS_FILENAME%%</parameter>
         <parameter key="doctrine.db.data_dir">%%PORTUNUS_DATADIR%%</parameter>
     </parameters>
@@ -78,6 +67,7 @@ EOF;
 
         // write config xml
         $xml = str_replace('%%CREATED%%', time(), $xml);
+        $xml = str_replace('%%PORTUNUS_VENDORDIR%%', self::relativePath($vendorDir, realpath(__DIR__ . '/../../..')), $xml);
         $xml = str_replace('%%PORTUNUS_FILENAME%%', $portunusDbName, $xml);
         $xml = str_replace('%%PORTUNUS_DATADIR%%', $portunusDataDir, $xml);
         file_put_contents(__DIR__.'/../../../config/config.xml', $xml);
@@ -104,5 +94,43 @@ EOF;
         }
 
         return compact('portunusDbName', 'portunusDataDir');
+    }
+
+    /**
+     * Gets a relative path from two paths
+     *
+     * @param $from
+     * @param $to
+     * @return string
+     */
+    private static function relativePath($from, $to)
+    {
+        $from = explode('/', $from);
+        $to = explode('/', $to);
+        $relativePath = '';
+
+        $i = 0;
+        while (isset($from[$i]) && isset($to[$i])) {
+            if ($from[$i] != $to[$i]) {
+                break;
+            }
+            $i++;
+        }
+
+        $j = count($from) - 1;
+        while ($i <= $j) {
+            if (!empty($from[$j])) {
+                $relativePath .= '..' . '/';
+            }
+            $j--;
+        }
+        while (isset($to[$i])) {
+            if (!empty($to[$i])) {
+                $relativePath .= $to[$i] . '/';
+            }
+            $i++;
+        }
+
+        return substr($relativePath, 0, -1);
     }
 }
