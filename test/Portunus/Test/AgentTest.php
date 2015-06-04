@@ -4,7 +4,7 @@ namespace Portunus\Test;
 
 use Portunus\Test\Model\ModelUnitTestCase;
 
-use Portunus\Agent;
+use Portunus\Application\Agent;
 use Portunus\Model\Safe;
 use Portunus\Model\Secret;
 
