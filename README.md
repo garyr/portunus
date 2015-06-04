@@ -105,7 +105,7 @@ $callback = function($safeName) {
     return $myPrivateKeyBytes;
 };
 
-$Agent = new Portunus\Agent();
+$Agent = new Portunus\Application\Agent();
 $Agent->setSafe('dev');
 $Agent->setPrivateKeyCallback($callback);
 

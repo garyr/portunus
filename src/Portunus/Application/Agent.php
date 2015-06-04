@@ -1,11 +1,12 @@
 <?php
 
-namespace Portunus;
+namespace Portunus\Application;
 
 use Portunus\Controller\SafeController;
 use Portunus\Controller\SecretController;
 use Portunus\Crypt\RSA\PrivateKey;
 use Portunus\Model\Safe;
+use Portunus\ContainerAwareTrait;
 
 class Agent
 {
