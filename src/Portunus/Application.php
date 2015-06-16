@@ -25,8 +25,7 @@ class Application
             $container = new ContainerBuilder();
         }
 
-        $dataDir = $container->getParameter('doctrine.db.data_dir');
-        $dbName = $container->getParameter('doctrine.db.filename');
+        $dataDir = Application::resolveRelativePath($container->getParameter('doctrine.db.data_dir'));
 
         if (!is_dir($dataDir)) {
             $result = mkdir($dataDir, 0777, true);
@@ -35,21 +34,25 @@ class Application
             }
         }
 
-        // resolve relative path to data dir
-        $dataDir = Application::resolveRelativePath($dataDir);
-
-        // return if db file exists
-        $portunusDB = sprintf('%s/%s', $dataDir, $dbName);
-        if (file_exists($portunusDB)) {
-            return;
-        }
-
         $dev = $container->getParameter('portunus.dev');
         $container->setParameter('protunus.dev', true); // schema creation requires dev mode
         $metadata = $container->get('doctrine.entity_manager')->getMetadataFactory()->getAllMetadata();
-        $container->get('doctrine.schema_tool')->createSchema($metadata);
+
+        // create db if not exists
+        $dbName = $container->getParameter('doctrine.db.filename');
+        $portunusDB = sprintf('%s/%s', $dataDir, $dbName);
+        if (!file_exists($portunusDB)) {
+            $container->get('doctrine.schema_tool')->createSchema($metadata);
+        }
+
+        // create proxy classes if not exist
         $cacheDir = $container->get('portunus.application')->getCacheDir();
-        $container->get('doctrine.entity_manager')->getProxyFactory()->generateProxyClasses($metadata, $cacheDir);
+        $cacheFiles = glob($cacheDir . '/__CG__*.php');
+        if (count($cacheFiles) < 1) {
+            $cacheDir = $container->get('portunus.application')->getCacheDir();
+            $container->get('doctrine.entity_manager')->getProxyFactory()->generateProxyClasses($metadata, $cacheDir);
+        }
+
         $container->setParameter('protunus.dev', $dev);
     }
 
