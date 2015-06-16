@@ -35,6 +35,9 @@ class Application
             }
         }
 
+        // resolve relative path to data dir
+        $dataDir = Application::resolveRelativePath($dataDir);
+
         // return if db file exists
         $portunusDB = sprintf('%s/%s', $dataDir, $dbName);
         if (file_exists($portunusDB)) {
@@ -48,5 +51,19 @@ class Application
         $cacheDir = $container->get('portunus.application')->getCacheDir();
         $container->get('doctrine.entity_manager')->getProxyFactory()->generateProxyClasses($metadata, $cacheDir);
         $container->setParameter('protunus.dev', $dev);
+    }
+
+    public static function resolveRelativePath($dataDir)
+    {
+        $vendorDir = null;
+        $baseDir = __DIR__ . '/../..';
+        foreach (array($baseDir . '/../../autoload.php', $baseDir . '/../vendor/autoload.php', $baseDir . '/vendor/autoload.php') as $file) {
+            if (file_exists($file)) {
+                $vendorDir = realpath(dirname($file));
+                break;
+            }
+        }
+
+        return realpath(sprintf('%s/%s', $vendorDir,  $dataDir));
     }
 }

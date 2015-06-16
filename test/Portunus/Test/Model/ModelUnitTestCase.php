@@ -2,6 +2,7 @@
 
 namespace Portunus\Test\Model;
 
+use Portunus\Application;
 use Portunus\Test\UnitTestCase;
 
 abstract class ModelUnitTestCase extends UnitTestCase
@@ -17,6 +18,7 @@ abstract class ModelUnitTestCase extends UnitTestCase
         $this->getContainer()->setParameter('doctrine.db.filename', 'portunus_test.sqlite');
         $dataDir = $this->getContainer()->getParameter('doctrine.db.data_dir');
         $dbFile = $this->getContainer()->getParameter('doctrine.db.filename');
+        $dataDir = Application::resolveRelativePath($dataDir);
         $dbFile = sprintf('%s/%s', $dataDir, $dbFile);
 
         if (file_exists($dbFile)) {

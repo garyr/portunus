@@ -2,6 +2,8 @@
 
 namespace Portunus\Db;
 
+use Portunus\Application;
+
 class SqliteConnectionFactory
 {
     private $packageDir;
@@ -33,26 +35,13 @@ class SqliteConnectionFactory
     public function getConnection()
     {
         if (!preg_match('/^\//', $this->dataDir)) {
-            $this->dataDir = $this->resolveRelativePath($this->dataDir);
+            // resolve relative path to data dir
+            $this->dataDir = Application::resolveRelativePath($this->dataDir);
         }
 
         return array(
             'driver' => 'pdo_sqlite',
             'path' => sprintf('%s/%s', $this->dataDir, $this->filename),
         );
-    }
-
-    private function resolveRelativePath($dataDir)
-    {
-        $vendorDir = null;
-        $baseDir = __DIR__ . '/../../..';
-        foreach (array($baseDir . '/../../autoload.php', $baseDir . '/../vendor/autoload.php', $baseDir . '/vendor/autoload.php') as $file) {
-            if (file_exists($file)) {
-                $vendorDir = realpath(dirname($file));
-                break;
-            }
-        }
-
-        return realpath(sprintf('%s/%s', $vendorDir,  $dataDir));
     }
 }
