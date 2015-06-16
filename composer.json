@@ -53,7 +53,7 @@
         ]
     },
     "extra": {
-        "portunus-data-dir": "data",
+        "portunus-data-dir": "../data",
         "portunus-db-name": "portunus.sqlite"
     }
 }

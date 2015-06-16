@@ -7,7 +7,7 @@ use Portunus\Application;
 
 class Composer
 {
-    const DEFAULT_DATA_DIR = 'data';
+    const DEFAULT_DATA_DIR = '../data';
     const DEFAULT_DB_NAME = 'portunus.sqlite';
 
     /**
