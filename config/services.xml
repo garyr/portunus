@@ -17,6 +17,7 @@
             </argument>
             <argument>%portunus.dev%</argument>
             <argument type="expression">service('portunus.application').getCacheDir()</argument>
+            <argument type="service" id="doctrine.cache" />
         </service>
 
         <service id="doctrine.db.connection" class="Portunus\Db\SqliteConnectionFactory">
@@ -24,6 +25,8 @@
             <argument>%doctrine.db.filename%</argument>
             <argument>%doctrine.db.data_dir%</argument>
         </service>
+
+        <service id="doctrine.cache" class="Doctrine\Common\Cache\ArrayCache" />
 
         <service id="doctrine.entity_manager">
             <factory class="Doctrine\ORM\EntityManager" method="create" />
