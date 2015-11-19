@@ -1,0 +1,40 @@
+imports:
+  - { resource: config.xml }
+
+services:
+
+  portunus.application:
+    class: Portunus\Application
+
+  metadata.config:
+    class: Doctrine\ORM\Tools\Setup
+    factory_class: Doctrine\ORM\Tools\Setup
+    factory_method: createAnnotationMetadataConfiguration
+    arguments:
+      - [ "@=service('portunus.application').getSrcDir()" ]
+      - %portunus.dev%
+      - "@=service('portunus.application').getCacheDir()"
+      - @doctrine.cache
+
+  doctrine.db.connection:
+    class: Portunus\Db\SqliteConnectionFactory
+    arguments:
+      - "%portunus.composer_vendor_dir%/../"
+      - %doctrine.db.filename%
+      - %doctrine.db.data_dir%
+
+  doctrine.cache:
+    class: Doctrine\Common\Cache\ArrayCache
+
+  doctrine.entity_manager:
+    class: Doctrine\ORM\EntityManager
+    factory_class: Doctrine\ORM\EntityManager
+    factory_method: create
+    arguments:
+      - "@=service('doctrine.db.connection').getConnection()"
+      - @metadata.config
+
+  doctrine.schema_tool:
+    class: Doctrine\ORM\Tools\SchemaTool
+    arguments:
+      - @doctrine.entity_manager
