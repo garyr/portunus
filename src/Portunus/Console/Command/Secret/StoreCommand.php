@@ -81,8 +81,12 @@ class StoreCommand extends Command
             $value = $helper->ask($input, $output, $question);
         }
 
-        if (empty($value)) {
+        if (empty($value) && !file_exists($value)) {
             throw new \Exception("Invalid value");
+        }
+
+        if (file_exists($value)) {
+            $value = file_get_contents($value);
         }
 
         $output->writeln('');
