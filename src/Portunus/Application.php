@@ -58,6 +58,10 @@ class Application
 
     public static function resolveRelativePath($dataDir)
     {
+        if (substr($dataDir, 0, 1) == '/') {
+            return $dataDir;
+        }
+
         $vendorDir = null;
         $baseDir = __DIR__ . '/../..';
         foreach (array($baseDir . '/../../autoload.php', $baseDir . '/../vendor/autoload.php', $baseDir . '/vendor/autoload.php') as $file) {
